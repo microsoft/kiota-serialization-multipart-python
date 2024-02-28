@@ -6,8 +6,8 @@ from enum import Enum
 from typing import Any, Callable, Dict, List, Optional, TypeVar
 from uuid import UUID
 
-from kiota_abstractions.serialization import Parsable, SerializationWriter
 from kiota_abstractions.multipart_body import MultipartBody
+from kiota_abstractions.serialization import Parsable, SerializationWriter
 
 T = TypeVar("T")
 U = TypeVar("U", bound=Parsable)
@@ -16,14 +16,13 @@ U = TypeVar("U", bound=Parsable)
 class MultipartSerializationWriter(SerializationWriter):
 
     def __init__(self) -> None:
-        
-        self._stream: Optional[io.BytesIO] = io.BytesIO()
+
+        self._stream: io.BytesIO = io.BytesIO()
         self.writer = io.TextIOWrapper(
             buffer=self._stream,
             encoding='utf-8',
-            line_buffering=True, # Set AutoFlush to True
-            newline="\r\n" # Set NewLine to "\r\n" as per HTTP spec
-            
+            line_buffering=True,  # Set AutoFlush to True
+            newline="\r\n"  # Set NewLine to "\r\n" as per HTTP spec
         )
 
         self._on_start_object_serialization: Optional[Callable[[Parsable, SerializationWriter],
@@ -194,7 +193,7 @@ class MultipartSerializationWriter(SerializationWriter):
         """
         raise NotImplementedError()
 
-    def get_serialized_content(self) -> bytes:
+    def get_serialized_content(self) -> io.BytesIO:
         """Gets the value of the serialized content.
         Returns:
             bytes: The value of the serialized content.
@@ -261,7 +260,6 @@ class MultipartSerializationWriter(SerializationWriter):
             called right after the serialization process starts.
         """
         self._on_start_object_serialization = value
-
 
     def _serialize_value(self, temp_writer: MultipartSerializationWriter, value: U):
         if on_before := self.on_before_object_serialization:
