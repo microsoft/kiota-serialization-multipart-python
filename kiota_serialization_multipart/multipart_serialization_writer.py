@@ -42,7 +42,7 @@ class MultipartSerializationWriter(SerializationWriter):
             if key:
                 self.writer.write(": ")
             self.writer.write(value)
-        self.writer.write("\r\n")
+        self.writer.write("\n")
 
     def write_bool_value(self, key: Optional[str], value: Optional[bool]) -> None:
         """Writes the specified boolean value to the stream with an optional given key.
@@ -171,11 +171,9 @@ class MultipartSerializationWriter(SerializationWriter):
         temp_writer = self._create_new_writer()
 
         if isinstance(value, MultipartBody):
-            self._serialize_value(temp_writer, value)
+            self._serialize_value(self, value)
             if self._on_after_object_serialization:
                 self._on_after_object_serialization(value)
-
-            self.writer = temp_writer.writer
         else:
             raise ValueError(f"Expected a MultipartBody instance but got {type(value)}")
 
@@ -193,7 +191,7 @@ class MultipartSerializationWriter(SerializationWriter):
         """
         raise NotImplementedError()
 
-    def get_serialized_content(self) -> io.BytesIO:
+    def get_serialized_content(self) -> bytes:
         """Gets the value of the serialized content.
         Returns:
             bytes: The value of the serialized content.
@@ -201,7 +199,9 @@ class MultipartSerializationWriter(SerializationWriter):
         if self.writer:
             self.writer.flush()
         self._stream.seek(0)
-        return self._stream
+        x = self._stream.read()
+        print(x)
+        return x
 
     @property
     def on_before_object_serialization(self) -> Optional[Callable[[Parsable], None]]:
