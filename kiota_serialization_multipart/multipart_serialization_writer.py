@@ -199,9 +199,7 @@ class MultipartSerializationWriter(SerializationWriter):
         if self.writer:
             self.writer.flush()
         self._stream.seek(0)
-        x = self._stream.read()
-        print(x)
-        return x
+        return self._stream.read()
 
     @property
     def on_before_object_serialization(self) -> Optional[Callable[[Parsable], None]]:
