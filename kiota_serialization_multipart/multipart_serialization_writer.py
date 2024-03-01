@@ -170,12 +170,11 @@ class MultipartSerializationWriter(SerializationWriter):
         """
         temp_writer = self._create_new_writer()
 
-        if isinstance(value, MultipartBody):
-            self._serialize_value(self, value)
-            if self._on_after_object_serialization:
-                self._on_after_object_serialization(value)
-        else:
+        if not isinstance(value, MultipartBody):
             raise ValueError(f"Expected a MultipartBody instance but got {type(value)}")
+        self._serialize_value(self, value)
+        if self._on_after_object_serialization:
+            self._on_after_object_serialization(value)
 
     def write_null_value(self, key: Optional[str]) -> None:
         """Writes a null value for the specified key.
