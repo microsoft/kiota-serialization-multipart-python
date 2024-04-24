@@ -11,7 +11,7 @@ Read more about Kiota [here](https://github.com/microsoft/kiota/blob/main/README
 
 ## Using the Microsoft Kiota Multipart Serialization Library
 
-In order to use this library, install the package by running:
+In order to use this library, install the package by runni
 
 ```cmd
 pip install microsoft-kiota-serialization-multipart
