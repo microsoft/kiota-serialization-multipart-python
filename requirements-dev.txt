@@ -16,6 +16,6 @@ typing-extensions==4.11.0
 
 yapf==0.40.2
 
-microsoft-kiota-abstractions==1.3.2
+microsoft-kiota-abstractions==1.3.3
 
 microsoft-kiota-serialization-json==1.2.0
